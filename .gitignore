@@ -1,0 +1,12 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/ApiPerfComparison/.cr/personal/FavoritesList
+/ApiPerfComparison/.vs/ApiPerfComparison
+/ApiPerfComparison/bin
+/ApiPerfComparison/obj
+/BenchmarkHelper/bin
+/BenchmarkHelper/obj
+/TestProject1/bin
+/TestProject1/obj
