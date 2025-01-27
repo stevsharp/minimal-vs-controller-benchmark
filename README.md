@@ -4,3 +4,7 @@ helping developers evaluate the trade-offs between Minimal APIs and traditional 
 
 Read more at :
 https://dev.to/stevsharp/minimal-api-performance-benchmark-14ln
+
+## Connect with Me
+
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-Profile-blue)](https://www.linkedin.com/in/spyros-ponaris-913a6937/)
