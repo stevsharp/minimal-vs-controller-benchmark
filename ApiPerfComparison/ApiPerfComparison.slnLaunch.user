@@ -1,0 +1,19 @@
+[
+  {
+    "Name": "New Profile",
+    "Projects": [
+      {
+        "Path": "ApiPerfComparison.csproj",
+        "Action": "Start"
+      },
+      {
+        "Path": "..\\TestProject1\\TestProject1.csproj",
+        "Action": "Start"
+      },
+      {
+        "Path": "..\\BenchmarkHelper\\BenchmarkHelper.csproj",
+        "Action": "Start"
+      }
+    ]
+  }
+]

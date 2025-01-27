@@ -1,0 +1,1 @@
+﻿public record MyData(string Name, int Age);
