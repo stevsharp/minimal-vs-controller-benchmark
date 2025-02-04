@@ -2,6 +2,7 @@
 
 using FluentValidation;
 
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
@@ -43,38 +44,37 @@ public static class EndpointRouteBuilderExtensions
             return Results.Ok($"User {user.Name} created successfully!");
         });
 
-        app.MapPost("/login", (UserLogin user) =>
+        app.MapPost("/login", (UserLogin user, IConfiguration configuration) =>
         {
-            var apiKeyConstants = new ApiKeyConstants();
-
             if (user.Username == "admin" && user.Password == "password") 
             {
-                var tokenHandler = new JwtSecurityTokenHandler();
-                var key = Encoding.UTF8.GetBytes(apiKeyConstants.JwtKey);
-                var tokenDescriptor = new SecurityTokenDescriptor
-                {
-                    Subject = new ClaimsIdentity(new[]
-                    {
-                        new Claim(ClaimTypes.Name, user.Username),
-                        new Claim(ClaimTypes.Role, "Admin") 
-                    }),
-                    Expires = DateTime.UtcNow.AddHours(1),
-                    Issuer = apiKeyConstants.Issuer,
-                    Audience = apiKeyConstants.Audience,
-                    SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
+                var claims = new[]
+                 {
+                    new Claim(ClaimTypes.NameIdentifier, user.Username)
                 };
 
-                var token = tokenHandler.CreateToken(tokenDescriptor);
-                var tokenString = tokenHandler.WriteToken(token);
+                var token = new JwtSecurityToken
+                (
+                    issuer: configuration["Jwt:Issuer"],
+                    audience: configuration["Jwt:Audience"],
+                    claims: claims,
+                    expires: DateTime.UtcNow.AddDays(60),
+                    notBefore: DateTime.UtcNow,
+                    signingCredentials: new SigningCredentials(
+                        new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["Jwt:Key"])),
+                        SecurityAlgorithms.HmacSha256)
+                );
+
+                var tokenString = new JwtSecurityTokenHandler().WriteToken(token);
 
                 return Results.Ok(new { Token = tokenString });
             }
 
             return Results.Unauthorized();
-        }).AllowAnonymous(); 
+        }).AllowAnonymous();
 
         app.MapGet("/secure", () => "This is a secured endpoint!")
-            .RequireAuthorization();
+            .RequireAuthorization(new AuthorizeAttribute { AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme });
 
         app.MapGet("/notSecure1", () => "This is a secured endpoint!")
             .AllowAnonymous();
