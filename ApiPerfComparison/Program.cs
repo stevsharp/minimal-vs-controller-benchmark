@@ -8,10 +8,14 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 builder.Services.AddValidatorsFromAssemblyContaining<Program>();
-builder.Services.AddAuthorization();
-builder.Services.AddApiKeySupport(new ApiKeyConstants());
+
+builder.Services.AddApiKeySupport(builder.Configuration);
+
 
 var app = builder.Build();
+
+app.UseAuthorization();
+app.UseAuthentication();
 
 app.MapControllers();
 app.RegisterEndpoints();
@@ -19,8 +23,6 @@ app.RegisterEndpoints();
 // Register the middleware
 //app.UseMiddleware<ValidationMiddleware>();
 
-app.UseAuthentication();
-app.UseAuthorization();
 
 app.Run();
 

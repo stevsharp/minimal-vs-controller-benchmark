@@ -71,12 +71,13 @@ public static class EndpointRouteBuilderExtensions
             }
 
             return Results.Unauthorized();
-        });
+        }).AllowAnonymous(); 
 
-        app.MapGet("/secure", [Authorize] () => "This is a secured endpoint!")
+        app.MapGet("/secure", () => "This is a secured endpoint!")
             .RequireAuthorization();
 
-        app.MapGet("/secure1", () => "This is a secured endpoint!");
+        app.MapGet("/notSecure1", () => "This is a secured endpoint!")
+            .AllowAnonymous();
     
 
         app.MapPost("minimalapi/createV1", ([FromBody] UserDto user, IValidator<UserDto> validator) =>
