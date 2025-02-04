@@ -1,15 +1,19 @@
-
+﻿
 using ApiPerfComparison.Auth;
 using ApiPerfComparison.Middleware;
 
 using FluentValidation;
 
+using Microsoft.IdentityModel.Logging;
 using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddHttpContextAccessor();
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddEndpointsApiExplorer();
 
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddEndpointsApiExplorer();
+IdentityModelEventSource.ShowPII = true; 
+
 builder.Services.AddSwaggerGen(options =>
 {
     options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
@@ -33,7 +37,7 @@ builder.Services.AddSwaggerGen(options =>
                     Id = "Bearer"
                 }
             },
-            new string[] {}
+            Array.Empty<string>()
         }
     });
 });
@@ -42,7 +46,6 @@ builder.Services.AddControllers();
 builder.Services.AddValidatorsFromAssemblyContaining<Program>();
 
 builder.Services.AddApiKeySupport(builder.Configuration);
-
 
 var app = builder.Build();
 

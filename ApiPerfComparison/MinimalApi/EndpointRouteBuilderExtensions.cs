@@ -1,9 +1,5 @@
-﻿using ApiPerfComparison.Auth;
+﻿using FluentValidation;
 
-using FluentValidation;
-
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 
@@ -19,12 +15,12 @@ public static class EndpointRouteBuilderExtensions
         app.MapGet("/minimalapi/hello", async () => {
 
             return "Hello from Minimal API!";
-        });
+        }).AllowAnonymous();
 
         app.MapPost("/minimalapi/data", async (MyData data) =>
         {
             return Results.Ok(data);
-        });
+        }).AllowAnonymous(); 
         
         app.MapPost("minimalapi/create", ([FromBody] UserDto user) =>
         {
@@ -42,7 +38,7 @@ public static class EndpointRouteBuilderExtensions
             }
 
             return Results.Ok($"User {user.Name} created successfully!");
-        });
+        }).AllowAnonymous(); 
 
         app.MapPost("/login", (UserLogin user, IConfiguration configuration) =>
         {
@@ -53,17 +49,17 @@ public static class EndpointRouteBuilderExtensions
                     new Claim(ClaimTypes.NameIdentifier, user.Username)
                 };
 
-                var token = new JwtSecurityToken
-                (
-                    issuer: configuration["Jwt:Issuer"],
-                    audience: configuration["Jwt:Audience"],
-                    claims: claims,
-                    expires: DateTime.UtcNow.AddDays(60),
-                    notBefore: DateTime.UtcNow,
-                    signingCredentials: new SigningCredentials(
-                        new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["Jwt:Key"])),
-                        SecurityAlgorithms.HmacSha256)
-                );
+                    var token = new JwtSecurityToken
+                    (
+                        issuer: configuration["Jwt:Issuer"],
+                        audience: configuration["Jwt:Audience"],
+                        claims: claims,
+                        expires: DateTime.UtcNow.AddDays(60),
+                        notBefore: DateTime.UtcNow,
+                        signingCredentials: new SigningCredentials(
+                            new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["Jwt:Key"])),
+                            SecurityAlgorithms.HmacSha256)
+                    );
 
                 var tokenString = new JwtSecurityTokenHandler().WriteToken(token);
 
@@ -73,8 +69,15 @@ public static class EndpointRouteBuilderExtensions
             return Results.Unauthorized();
         }).AllowAnonymous();
 
-        app.MapGet("/secure", () => "This is a secured endpoint!")
-            .RequireAuthorization(new AuthorizeAttribute { AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme });
+        app.MapGet("/secure", (HttpContext httpContext) =>
+        {
+            var user = httpContext.User;
+            Console.WriteLine($"User authenticated: {user.Identity?.IsAuthenticated}");
+            Console.WriteLine($"User name: {user.Identity?.Name}");
+            Console.WriteLine($"Roles: {string.Join(",", user.Claims.Where(c => c.Type == ClaimTypes.Role).Select(c => c.Value))}");
+
+            return "This is a secured endpoint!";
+        }).RequireAuthorization();
 
         app.MapGet("/notSecure1", () => "This is a secured endpoint!")
             .AllowAnonymous();
@@ -95,7 +98,7 @@ public static class EndpointRouteBuilderExtensions
             }
 
             return Results.Ok($"User {user.Name} created successfully!");
-        });
+        }).AllowAnonymous(); 
 
     }
 }
