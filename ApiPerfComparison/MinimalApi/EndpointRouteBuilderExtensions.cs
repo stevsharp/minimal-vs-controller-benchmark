@@ -6,17 +6,17 @@ using System.ComponentModel.DataAnnotations;
 
 public static class EndpointRouteBuilderExtensions
 {
-    public static void RegisterDishesEndpoints(this IEndpointRouteBuilder app)
+    public static void RegisterEndpoints(this IEndpointRouteBuilder app)
     {
         app.MapGet("/minimalapi/hello", async () => {
 
             return "Hello from Minimal API!";
-        });
+        }).AllowAnonymous();
 
         app.MapPost("/minimalapi/data", async (MyData data) =>
         {
             return Results.Ok(data);
-        });
+        }).AllowAnonymous(); 
         
         app.MapPost("minimalapi/create", ([FromBody] UserDto user) =>
         {
@@ -34,8 +34,9 @@ public static class EndpointRouteBuilderExtensions
             }
 
             return Results.Ok($"User {user.Name} created successfully!");
-        });
+        }).AllowAnonymous(); 
 
+   
         app.MapPost("minimalapi/createV1", ([FromBody] UserDto user, IValidator<UserDto> validator) =>
         {
             var validationResult = validator.Validate(user);
@@ -51,7 +52,7 @@ public static class EndpointRouteBuilderExtensions
             }
 
             return Results.Ok($"User {user.Name} created successfully!");
-        });
+        }).AllowAnonymous(); 
 
     }
 }

@@ -10,3 +10,10 @@
 /BenchmarkHelper/obj
 /TestProject1/bin
 /TestProject1/obj
+/TestProject1/.vs/TestProject1
+/.vs/ApiPerfComparison/v17
+/.vs/ApiPerfComparison/config
+/.vs
+/ApiPerfComparison/.vs/ProjectEvaluation
+/TestJwt/bin/Debug/net9.0
+/TestJwt/obj

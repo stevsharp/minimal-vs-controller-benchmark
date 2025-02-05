@@ -11,3 +11,5 @@ public class UserDto
     [Range(18, 99)]
     public int Age { get; set; }
 }
+
+record UserLogin(string Username, string Password);
