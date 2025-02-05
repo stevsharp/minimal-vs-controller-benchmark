@@ -1,18 +1,14 @@
 ﻿
-using ApiPerfComparison.Auth;
+
 using ApiPerfComparison.Middleware;
 
 using FluentValidation;
-
-using Microsoft.IdentityModel.Logging;
 using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddEndpointsApiExplorer();
-
-IdentityModelEventSource.ShowPII = true; 
 
 builder.Services.AddSwaggerGen(options =>
 {
@@ -45,12 +41,8 @@ builder.Services.AddSwaggerGen(options =>
 builder.Services.AddControllers();
 builder.Services.AddValidatorsFromAssemblyContaining<Program>();
 
-builder.Services.AddApiKeySupport(builder.Configuration);
 
 var app = builder.Build();
-
-app.UseAuthorization();
-app.UseAuthentication();
 
 app.MapControllers();
 app.RegisterEndpoints();
@@ -61,8 +53,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-// Register the middleware
-//app.UseMiddleware<ValidationMiddleware>();
+app.UseMiddleware<ValidationMiddleware>();
 
 
 app.Run();
