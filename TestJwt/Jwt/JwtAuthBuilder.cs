@@ -6,12 +6,10 @@ using Microsoft.IdentityModel.Tokens;
 
 using System.Text;
 
-public static class JwtAuthBuilderExtesnions
+public static class JwtAuthBuilderExtensions
 {
-    public static AuthenticationBuilder AddJwtAuthentication(this IServiceCollection services, IConfiguration configuration)
+    public static AuthenticationBuilder AddJwtAuthentication(this IServiceCollection services, JwtConfiguration jwtConfiguration)
     {
-        var jwtConfiguration = new JwtConfigurationFactory(configuration).Create();
-
         services.AddAuthorization();
 
         return services.AddAuthentication(x =>
@@ -31,7 +29,6 @@ public static class JwtAuthBuilderExtesnions
                 ValidIssuer = jwtConfiguration.Issuer,
                 ValidAudience = jwtConfiguration.Audience,
                 IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtConfiguration.Secret)),
-
                 RequireExpirationTime = true,
             };
         });
