@@ -15,3 +15,5 @@
 /.vs/ApiPerfComparison/config
 /.vs
 /ApiPerfComparison/.vs/ProjectEvaluation
+/TestJwt/bin/Debug/net9.0
+/TestJwt/obj
