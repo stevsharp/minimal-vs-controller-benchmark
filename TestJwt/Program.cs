@@ -10,11 +10,13 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddHttpContextAccessor();
 
-builder.Services.AddTransient<JwtConfiguration>();
+var jwtConfig = builder.Configuration.GetSection("Jwt").Get<JwtConfiguration>();
+builder.Services.AddSingleton(jwtConfig);
+
 builder.Services.AddScoped<IdentityService>();
 
 
-builder.Services.AddJwtAuthentication(builder.Configuration);
+builder.Services.AddJwtAuthentication(jwtConfig);
 builder.Services.AddSwaggerGen(SwaggerConfiguration.Configure);
 
 var app = builder.Build();
