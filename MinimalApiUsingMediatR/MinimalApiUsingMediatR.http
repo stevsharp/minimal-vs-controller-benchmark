@@ -1,0 +1,6 @@
+@MinimalApiUsingMediatR_HostAddress = http://localhost:5179
+
+GET {{MinimalApiUsingMediatR_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

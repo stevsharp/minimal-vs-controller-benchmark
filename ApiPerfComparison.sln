@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestProject1", "TestProject
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestJwt", "TestJwt\TestJwt.csproj", "{1B49B886-C6F0-44D1-8727-9E1272CC317B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MinimalApiUsingMediatR", "MinimalApiUsingMediatR\MinimalApiUsingMediatR.csproj", "{FB10C2D3-CE4D-43FD-B932-CFA7AD79B3C6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,8 +35,15 @@ Global
 		{1B49B886-C6F0-44D1-8727-9E1272CC317B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1B49B886-C6F0-44D1-8727-9E1272CC317B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1B49B886-C6F0-44D1-8727-9E1272CC317B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FB10C2D3-CE4D-43FD-B932-CFA7AD79B3C6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FB10C2D3-CE4D-43FD-B932-CFA7AD79B3C6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FB10C2D3-CE4D-43FD-B932-CFA7AD79B3C6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FB10C2D3-CE4D-43FD-B932-CFA7AD79B3C6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {4F59DEDD-6854-41F0-88A4-FDADBC4D3A34}
 	EndGlobalSection
 EndGlobal
