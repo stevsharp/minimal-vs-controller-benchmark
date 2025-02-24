@@ -12,8 +12,11 @@ public class CreateContactHandler(AppDbContext context) : IRequestHandler<Create
     public async Task<ContactItem> Handle(CreateContactCommand request, CancellationToken cancellationToken)
     {
         var contact = new ContactItem { Name = request.Name, Email = request.Email };
-        _context.Contacts.Add(contact);
+         
+        await _context.Contacts.AddAsync(contact);
+
         await _context.SaveChangesAsync(cancellationToken);
+
         return contact;
     }
 }
